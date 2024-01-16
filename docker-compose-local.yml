@@ -1,0 +1,24 @@
+version: "3.8" # 도커 컴포즈 버전
+services: # 이곳에 실행하려는 컨테이너들을 정의
+  pharmacy-recommendation-redis:
+    container_name: pharmacy-recommendation-redis
+    build:
+      dockerfile: Dockerfile
+      context: ./redis
+    image: suyeon77/pharmacy-recommendation-redis
+    ports:
+      - "6379:6379"
+  pharmacy-recommendation-database:
+    container_name: pharmacy-recommendation-database
+    build:
+      dockerfile: Dockerfile
+      context: ./database
+    image: suyeon77/pharmacy-recommendation-database
+    environment:
+      - MARIADB_DATABASE=pharmacy-recommendation
+      - MARIADB_ROOT_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    volumes:
+      - ./database/config:/etc/mysql/conf.d
+    ports:
+      - "3307:3306" # (컨테이너 외부:컨테이너 내부) 컨테이너 내부는 무조건 3306
+                    # 호스트에서는 3307 포트를 사용하고, 컨테이너 내부에서는 3306 포트를 사용하는 것.
