@@ -12,6 +12,12 @@ spring:
   config:
     activate:
       on-profile: common # application-common.yml 과 동일한 역할
+
+kakao:
+  rest:
+    api:
+      key: ${KAKAO_REST_API_KEY}
+
 # ...
 server:
   port: 8081
